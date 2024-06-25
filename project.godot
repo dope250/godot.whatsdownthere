@@ -10,10 +10,23 @@ config_version=5
 
 [application]
 
-config/name="Godot 4 Fps Controller"
-run/main_scene="res://Example World/Objects/World/world.tscn"
+config/name="What's Down There?!"
+config/name_localized={
+"de": "Was ist da unten?!"
+}
+config/version="240605"
+run/main_scene="res://scenes/WateringWorld.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://Title.png"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/func_godot/plugin.cfg")
 
 [filesystem]
 
@@ -138,7 +151,3 @@ right={
 3d_physics/layer_4="Weapons"
 3d_physics/layer_5="Rigid Body Projectiles"
 3d_physics/layer_6="Enemys"
-
-[rendering]
-
-renderer/rendering_method.mobile="gl_compatibility"
