@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="WeaponResource" load_steps=5 format=3 uid="uid://c7a17erbia7py"]
+
+[ext_resource type="PackedScene" uid="uid://bpxa3je174q43" path="res://Player_Controller/Spawnable_Objects/Projectiles_To_Load/basic_rigid_body_projectile.tscn" id="1_nvgy0"]
+[ext_resource type="Script" path="res://Player_Controller/scripts/Weapon_State_Machine/weapon_resource.gd" id="2_qhhxx"]
+[ext_resource type="PackedScene" uid="uid://cvbk5bxenpxey" path="res://Player_Controller/Spawnable_Objects/Weapons/blaster_I.tscn" id="3_8m3sn"]
+[ext_resource type="PackedScene" uid="uid://ciu0xkaw0ioef" path="res://Player_Controller/Spawnable_Objects/SprayProfiles/spray_profile_1.tscn" id="4_yg2df"]
+
+[resource]
+script = ExtResource("2_qhhxx")
+weapon_name = "Fishing Rod"
+pick_up_animation = "Global/blasterI Active"
+shoot_animation = "Global/blasterI Shoot"
+reload_animation = "Global/blasterI Reload"
+change_animation = "Global/blasterI De-Activate"
+drop_animation = "Global/blasterI Drop"
+out_of_ammo_animation = "Global/blasterI OOA"
+melee_animation = "Global/blasterI Melee"
+magazine = 1
+max_ammo = 999
+damage = 1
+melee_damage = 1.0
+auto_fire = false
+fire_range = 500
+can_be_dropped = true
+weapon_drop = ExtResource("3_8m3sn")
+weapon_spray = ExtResource("4_yg2df")
+projectile_to_load = ExtResource("1_nvgy0")
+incremental_reload = false
