@@ -261,12 +261,12 @@ ground_curve = 0.067272
 sun_angle_max = 56.12
 sun_curve = 0.106066
 
-[sub_resource type="Sky" id="Sky_a4lit"]
+[sub_resource type="Sky" id="Sky_hc2qs"]
 sky_material = SubResource("ProceduralSkyMaterial_endrq")
 
 [sub_resource type="Environment" id="Environment_dmbxu"]
 background_mode = 2
-sky = SubResource("Sky_a4lit")
+sky = SubResource("Sky_hc2qs")
 ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
 

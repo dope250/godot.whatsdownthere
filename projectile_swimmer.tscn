@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://8d58374uk6xr"]
+
+[ext_resource type="Script" path="res://projectile_swimmer.gd" id="1_jgd26"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_mgbfm"]
+radius = 1.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_me467"]
+radius = 1.0
+height = 2.0
+
+[node name="Swimmer" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.76796, 1.32847, -5.5762)
+mass = 0.1
+script = ExtResource("1_jgd26")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+shape = SubResource("SphereShape3D_mgbfm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("SphereMesh_me467")
+skeleton = NodePath("../../CharacterBody3D/Camera/Camera3D/Weapons/wpn_FishingRod")
