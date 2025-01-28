@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://8d58374uk6xr"]
+[gd_scene load_steps=9 format=3 uid="uid://8d58374uk6xr"]
 
 [ext_resource type="Script" path="res://projectile_swimmer.gd" id="1_jgd26"]
 
@@ -6,8 +6,40 @@
 radius = 1.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_me467"]
-radius = 1.0
-height = 2.0
+radius = 0.1
+height = 0.2
+
+[sub_resource type="Gradient" id="Gradient_ywyk1"]
+interpolation_mode = 2
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vwvpp"]
+gradient = SubResource("Gradient_ywyk1")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ls6ob"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 2, 3, 0.7)
+albedo_texture = SubResource("GradientTexture2D_vwvpp")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+proximity_fade_enabled = true
+proximity_fade_distance = 2.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_ochvo"]
+material = SubResource("StandardMaterial3D_ls6ob")
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="Gradient" id="Gradient_ayte4"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.289474, 0.542105, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.92549, 0.235294, 0.317647, 1, 0.564706, 1, 1, 1, 0)
 
 [node name="Swimmer" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.76796, 1.32847, -5.5762)
@@ -19,6 +51,21 @@ transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 shape = SubResource("SphereShape3D_mgbfm")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
 mesh = SubResource("SphereMesh_me467")
 skeleton = NodePath("../../CharacterBody3D/Camera/Camera3D/Weapons/wpn_FishingRod")
+
+[node name="CatchEffect" type="CPUParticles3D" parent="."]
+emitting = false
+amount = 750
+lifetime = 600.0
+preprocess = 5.0
+lifetime_randomness = 1.0
+mesh = SubResource("QuadMesh_ochvo")
+emission_shape = 1
+emission_sphere_radius = 0.5
+gravity = Vector3(0, 0.05, 0)
+tangential_accel_min = -0.04
+tangential_accel_max = 0.04
+scale_amount_min = 0.1
+scale_amount_max = 1.5
+color_ramp = SubResource("Gradient_ayte4")

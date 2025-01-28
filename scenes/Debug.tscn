@@ -1,4 +1,4 @@
-[gd_scene load_steps=179 format=4 uid="uid://c4ue2vfsl6prn"]
+[gd_scene load_steps=182 format=4 uid="uid://c4ue2vfsl6prn"]
 
 [ext_resource type="PackedScene" uid="uid://8d58374uk6xr" path="res://projectile_swimmer.tscn" id="1_50b7e"]
 [ext_resource type="Script" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_xtqlq"]
@@ -15,6 +15,7 @@
 [ext_resource type="Material" uid="uid://d00s0g4usgmle" path="res://maps/textures/glass.tres" id="10_m1nxp"]
 [ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="14_6pb4b"]
 [ext_resource type="Texture2D" uid="uid://bwsyvn7umxy46" path="res://maps/textures/BarbedWire.png" id="15_igkla"]
+[ext_resource type="Shader" uid="uid://b3mjcc3lobed5" path="res://scenes/shader_Water.tres" id="16_ytxll"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kipr5"]
 
@@ -637,6 +638,16 @@ sky = SubResource("Sky_a4lit")
 ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qd8ek"]
+render_priority = 0
+shader = ExtResource("16_ytxll")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fjra1"]
+material = SubResource("ShaderMaterial_qd8ek")
+size = Vector2(500, 500)
+subdivide_width = 10
+subdivide_depth = 10
+
 [node name="Node3D" type="Node3D"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("main_camera")]
@@ -1156,3 +1167,7 @@ light_energy = 2.722
 light_indirect_energy = 2.25
 light_volumetric_fog_energy = 0.396
 shadow_enabled = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.5, 0)
+mesh = SubResource("PlaneMesh_fjra1")

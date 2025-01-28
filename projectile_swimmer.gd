@@ -1,18 +1,23 @@
 extends RigidBody3D
 
-@export var catchtime: float = 5.0
+@export var catchtimeMin: int = 5
+@export var catchtimeMax: int = 30
+
+
 var gotSomething: bool = false
+var catchEffect
+var destroyEffect
 
 func _ready():
-	await get_tree().create_timer(catchtime).timeout
+	catchEffect = get_node("CatchEffect")
+	#TODO: destroyEffect = get_node(".")
+	await get_tree().create_timer(randi() % catchtimeMin + catchtimeMax).timeout
+	catchEffect.set_emitting(true)
 	gotSomething = true
-	#queue_free()
+	
 
 func caught_something() -> bool:
-	if gotSomething:
-		return true
-	else:
-		return false
+	return gotSomething
 
 func catch_random_item():
 	var items = ["Fish", "Boot", "Treasure", "Junk"]

@@ -30,16 +30,19 @@ func cast_rod() -> void:
 		#if swimmer.has_method("initialize"):
 		# Give it a little push
 		swimmer.apply_central_impulse(-global_transform.basis.z * shoot_force)
-
 	else:
 		is_casting = false
 		pull_fish()
-		swimmer.remove()
+		
 
 func pull_fish() -> void:
-
 	if swimmer.caught_something():
 			swimmer.catch_random_item()
+	else:
+		print("Nothin' caught!")
+
+	swimmer.remove()
+	
 		
 #	if swimmer.is_colliding():
 #		var fish = swimmer.get_collider()
