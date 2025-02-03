@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="LootTable" load_steps=2 format=3 uid="uid://bvsfhi28wruac"]
+
+[ext_resource type="Script" path="res://scripts/loot_table.gd" id="1_uwf4u"]
+
+[resource]
+script = ExtResource("1_uwf4u")
+description = ""
+loot = Array[String](["Fish", "Boat", "Rusty old pair of shoes", "Can", "Starfish"])

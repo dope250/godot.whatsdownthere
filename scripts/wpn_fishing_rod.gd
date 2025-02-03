@@ -22,7 +22,7 @@ func _process(_delta: float) -> void:
 func cast_rod() -> void:
 	if not is_casting:
 		is_casting = true
-		print("Rod cast into the water")
+		print("Rod casted")
 		swimmer = projectile.instantiate()	
 		owner.add_child(swimmer)
 		swimmer.global_transform = muzzle.global_transform
