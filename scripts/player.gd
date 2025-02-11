@@ -36,6 +36,13 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
+	# Moves RigidBodies when touched for now (thanks cmdrRiker!) TODO: Needs better solution
+	for col_idx in get_slide_collision_count():
+		var col := get_slide_collision(col_idx)
+		if col.get_collider() is RigidBody3D:
+			col.get_collider().apply_central_impulse(-col.get_normal() * 0.1)
+			col.get_collider().apply_impulse(-col.get_normal() * 0.01, col.get_position())
+
 	if Input.is_action_just_pressed("exit"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 

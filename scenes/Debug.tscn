@@ -1,4 +1,4 @@
-[gd_scene load_steps=180 format=4 uid="uid://c4ue2vfsl6prn"]
+[gd_scene load_steps=182 format=4 uid="uid://c4ue2vfsl6prn"]
 
 [ext_resource type="PackedScene" uid="uid://8d58374uk6xr" path="res://projectile_swimmer.tscn" id="1_50b7e"]
 [ext_resource type="Script" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_xtqlq"]
@@ -15,6 +15,7 @@
 [ext_resource type="Material" uid="uid://d00s0g4usgmle" path="res://maps/textures/glass.tres" id="10_m1nxp"]
 [ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="14_6pb4b"]
 [ext_resource type="Material" uid="uid://qj8dtqk7rarm" path="res://maps/textures/BarbedWire.tres" id="15_syhmi"]
+[ext_resource type="ArrayMesh" uid="uid://dcusp4usdhnxb" path="res://gfx/models/apple.obj" id="16_yv6a2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kipr5"]
 
@@ -638,7 +639,10 @@ sky = SubResource("Sky_a4lit")
 ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
 
-[node name="Node3D" type="Node3D"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_lvdir"]
+radius = 0.0830084
+
+[node name="Node" type="Node3D"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("main_camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.30266, 1.01804, 0)
@@ -1164,3 +1168,14 @@ light_energy = 2.722
 light_indirect_energy = 2.25
 light_volumetric_fog_energy = 0.396
 shadow_enabled = true
+
+[node name="Apple" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.249413, 0.0857865, -0.85779)
+mass = 0.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Apple"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("SphereShape3D_lvdir")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Apple"]
+mesh = ExtResource("16_yv6a2")
