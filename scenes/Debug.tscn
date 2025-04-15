@@ -1,4 +1,4 @@
-[gd_scene load_steps=182 format=4 uid="uid://c4ue2vfsl6prn"]
+[gd_scene load_steps=184 format=4 uid="uid://c4ue2vfsl6prn"]
 
 [ext_resource type="PackedScene" uid="uid://8d58374uk6xr" path="res://projectile_swimmer.tscn" id="1_50b7e"]
 [ext_resource type="Script" path="res://addons/func_godot/src/map/func_godot_map.gd" id="1_xtqlq"]
@@ -15,6 +15,7 @@
 [ext_resource type="Material" uid="uid://d00s0g4usgmle" path="res://maps/textures/glass.tres" id="10_m1nxp"]
 [ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="14_6pb4b"]
 [ext_resource type="Material" uid="uid://qj8dtqk7rarm" path="res://maps/textures/BarbedWire.tres" id="15_syhmi"]
+[ext_resource type="ArrayMesh" uid="uid://d3xyyjomlk7iy" path="res://gfx/models/apple-half.obj" id="16_xxvxw"]
 [ext_resource type="ArrayMesh" uid="uid://dcusp4usdhnxb" path="res://gfx/models/apple.obj" id="16_yv6a2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kipr5"]
@@ -639,8 +640,12 @@ sky = SubResource("Sky_a4lit")
 ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ugnw6"]
+radius = 0.0470403
+height = 0.184826
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_lvdir"]
-radius = 0.0830084
+radius = 0.0769914
 
 [node name="Node" type="Node3D"]
 
@@ -1169,8 +1174,19 @@ light_indirect_energy = 2.25
 light_volumetric_fog_energy = 0.396
 shadow_enabled = true
 
+[node name="Apple_Half" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.56272, 0.171571, -30.2168)
+mass = 0.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Apple_Half"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0395746, 0.0786658, 0)
+shape = SubResource("CapsuleShape3D_ugnw6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Apple_Half"]
+mesh = ExtResource("16_xxvxw")
+
 [node name="Apple" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.249413, 0.0857865, -0.85779)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.18305, 0.0857855, -30.2329)
 mass = 0.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Apple"]
