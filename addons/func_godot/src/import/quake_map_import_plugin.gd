@@ -1,8 +1,5 @@
 @tool
-class_name QuakeMapImportPlugin
-extends EditorImportPlugin
-
-# Quake super.map import plugin
+class_name QuakeMapImportPlugin extends EditorImportPlugin
 
 func _get_importer_name() -> String:
 	return 'func_godot.map'
@@ -14,7 +11,7 @@ func _get_resource_type() -> String:
 	return 'Resource'
 
 func _get_recognized_extensions() -> PackedStringArray:
-	return PackedStringArray(['map'])
+	return PackedStringArray(['map','vmf'])
 	
 func _get_priority():
 	return 1.0
@@ -36,12 +33,11 @@ func _import(source_file, save_path, options, r_platform_variants, r_gen_files) 
 
 	var map_resource : QuakeMapFile = null
 
-	var existing_resource := load(save_path_str) as QuakeMapFile
-	if(existing_resource != null):
-		map_resource = existing_resource
+	if ResourceLoader.exists(save_path_str):
+		map_resource = load(save_path_str) as QuakeMapFile
 		map_resource.revision += 1
 	else:
 		map_resource = QuakeMapFile.new()
-	map_resource.map_data = FileAccess.open(source_file, FileAccess.READ).get_as_text(true)
+	map_resource.map_data = FileAccess.open(source_file, FileAccess.READ).get_as_text()
 
 	return ResourceSaver.save(map_resource, save_path_str)

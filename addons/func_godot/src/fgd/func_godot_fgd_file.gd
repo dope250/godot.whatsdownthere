@@ -1,8 +1,12 @@
 @tool
 @icon("res://addons/func_godot/icons/icon_godot_ranger.svg")
-## [Resource] file used to express a set of [FuncGodotFGDEntity] definitions. Can be exported as an FGD file for use with a Quake map editor. Used in conjunction with a [FuncGodotMapSetting] resource to generate nodes in a [FuncGodotMap] node.
-class_name FuncGodotFGDFile
-extends Resource
+class_name FuncGodotFGDFile extends Resource
+## [Resource] file used to express a set of [FuncGodotFGDEntity] definitions. 
+## 
+## Can be exported as an FGD file for use with a Quake or Hammer-based map editor. Used in conjunction with [FuncGodotMapSetting] to generate nodes in a [FuncGodotMap] node.
+##
+## @tutorial(Level Design Book FGD Chapter): https://book.leveldesignbook.com/appendix/resources/formats/fgd
+## @tutorial(Valve Developer Wiki FGD Article): https://developer.valvesoftware.com/wiki/FGD
 
 ## Supported map editors enum, used in conjunction with [member target_map_editor].
 enum FuncGodotTargetMapEditors {
@@ -13,30 +17,34 @@ enum FuncGodotTargetMapEditors {
 }
 
 ## Builds and exports the FGD file.
-@export var export_file: bool:
-	get:
-		return export_file # TODO Converter40 Non existent get function
-	set(new_export_file):
-		if new_export_file != export_file:
-			do_export_file(target_map_editor)
+@export_tool_button("Export FGD") var export_file := export_button
+
+func export_button() -> void:
+	do_export_file(target_map_editor)
 
 func do_export_file(target_editor: FuncGodotTargetMapEditors = FuncGodotTargetMapEditors.TRENCHBROOM, fgd_output_folder: String = "") -> void:
-	if not Engine.is_editor_hint():
-		return
-	
 	if fgd_output_folder.is_empty():
 		fgd_output_folder = FuncGodotLocalConfig.get_setting(FuncGodotLocalConfig.PROPERTY.FGD_OUTPUT_FOLDER) as String
 	if fgd_output_folder.is_empty():
-		print("Skipping export: No game config folder")
+		printerr("Skipping export: No game config folder")
 		return
 
 	if fgd_name == "":
-		print("Skipping export: Empty FGD name")
+		printerr("Skipping export: Empty FGD name")
+	
+	if not DirAccess.dir_exists_absolute(fgd_output_folder):
+		if DirAccess.make_dir_recursive_absolute(fgd_output_folder) != OK:
+			printerr("Skipping export: Failed to create directory")
+			return
 
-	var fgd_file = fgd_output_folder + "/" + fgd_name + ".fgd"
-
-	print("Exporting FGD to ", fgd_file)
+	var fgd_file = fgd_output_folder.path_join(fgd_name + ".fgd")
+	
 	var file_obj := FileAccess.open(fgd_file, FileAccess.WRITE)
+	if not file_obj:
+		printerr("Failed to open file for writing: ", fgd_file)
+		return
+	
+	print("Exporting FGD to ", fgd_file)
 	file_obj.store_string(build_class_text(target_editor))
 	file_obj.close()
 
@@ -65,6 +73,9 @@ func do_export_file(target_editor: FuncGodotTargetMapEditors = FuncGodotTargetMa
 ## Array of resources that inherit from [FuncGodotFGDEntityClass]. This array defines the entities that will be added to the exported FGD file and the nodes that will be generated in a [FuncGodotMap].
 @export var entity_definitions: Array[Resource] = []
 
+## Toggles whether [FuncGodotFGDModelPointClass] resources will generate models from their [PackedScene] files.
+@export var generate_model_point_class_models: bool = true
+
 func build_class_text(target_editor: FuncGodotTargetMapEditors = FuncGodotTargetMapEditors.TRENCHBROOM) -> String:
 	var res : String = ""
 
@@ -80,6 +91,8 @@ func build_class_text(target_editor: FuncGodotTargetMapEditors = FuncGodotTarget
 			continue
 		if ent.func_godot_internal:
 			continue
+		if ent is FuncGodotFGDModelPointClass:
+			ent._model_generation_enabled = generate_model_point_class_models
 		
 		var ent_text = ent.build_def_text(target_editor)
 		res += ent_text
@@ -100,8 +113,8 @@ func get_fgd_classes() -> Array:
 		res.append(cur_ent_def)
 	return res
 
-func get_entity_definitions() -> Dictionary:
-	var res : Dictionary = {}
+func get_entity_definitions() -> Dictionary[String, FuncGodotFGDEntityClass]:
+	var res: Dictionary[String, FuncGodotFGDEntityClass] = {}
 
 	for base_fgd in base_fgd_files:
 		var fgd_res = base_fgd.get_entity_definitions()
@@ -116,9 +129,9 @@ func get_entity_definitions() -> Dictionary:
 		
 		if ent is FuncGodotFGDPointClass or ent is FuncGodotFGDSolidClass:
 			var entity_def = ent.duplicate()
-			var meta_properties := {}
-			var class_properties := {}
-			var class_property_descriptions := {}
+			var meta_properties: Dictionary[String, Variant] = {}
+			var class_properties: Dictionary[String, Variant] = {}
+			var class_property_descriptions: Dictionary[String, Variant] = {}
 
 			for base_class in _generate_base_class_list(entity_def):
 				for meta_property in base_class.meta_properties:

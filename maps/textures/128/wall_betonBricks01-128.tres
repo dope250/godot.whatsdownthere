@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b7fmd22uyyy3b"]
+
+[ext_resource type="Texture2D" uid="uid://c1dow8sib1oyr" path="res://maps/textures/128/wall_betonBricks01-128.png" id="1_bvd2e"]
+
+[resource]
+albedo_texture = ExtResource("1_bvd2e")
+metallic_specular = 0.0
+texture_filter = 2

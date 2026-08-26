@@ -70,7 +70,7 @@ func _import(source_file, save_path, options, r_platform_variants, r_gen_files) 
 	var file = FileAccess.open(source_file, FileAccess.READ)
 	if file == null:
 		var err = FileAccess.get_open_error()
-		print(['Error opening super.wad file: ', err])
+		printerr(['Error opening super.wad file: ', err])
 		return err
 	
 	# Read WAD header
@@ -81,13 +81,13 @@ func _import(source_file, save_path, options, r_platform_variants, r_gen_files) 
 	if magic_string == 'WAD3':
 		wad_format = WadFormat.HalfLife
 	elif magic_string != 'WAD2':
-		print('Error: Invalid WAD magic')
+		printerr('Error: Invalid WAD magic')
 		return ERR_INVALID_DATA
 	
 	var palette_path : String = options['palette_file']
 	var palette_file : QuakePaletteFile = load(palette_path) as QuakePaletteFile
 	if wad_format == WadFormat.Quake and not palette_file:
-		print('Error: Invalid Quake palette file')
+		printerr('Error: Invalid Quake palette file')
 		file.close()
 		return ERR_CANT_ACQUIRE_RESOURCE
 	
@@ -160,7 +160,7 @@ func _import(source_file, save_path, options, r_platform_variants, r_gen_files) 
 			texture_data_array.append([name_string, width, height, pixels, palette_colors])
 	
 	# Create texture resources
-	var textures : Dictionary = {}
+	var textures : Dictionary[String, ImageTexture] = {}
 	
 	for texture_data in texture_data_array:
 		var name : String = texture_data[0]
@@ -202,7 +202,7 @@ func _import(source_file, save_path, options, r_platform_variants, r_gen_files) 
 			texture_image.generate_mipmaps()
 		
 		var texture := ImageTexture.create_from_image(texture_image) #,Texture2D.FLAG_MIPMAPS | Texture2D.FLAG_REPEAT | Texture2D.FLAG_ANISOTROPIC_FILTER
-		textures[name] = texture
+		textures[name.to_lower()] = texture
 	
 	# Save WAD resource
 	var wad_resource := QuakeWadFile.new(textures)

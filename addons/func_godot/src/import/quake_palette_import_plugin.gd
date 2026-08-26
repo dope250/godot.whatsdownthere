@@ -1,8 +1,5 @@
 @tool
-class_name QuakePaletteImportPlugin
-extends EditorImportPlugin
-
-# Quake super.map import plugin
+class_name QuakePaletteImportPlugin extends EditorImportPlugin
 
 func _get_importer_name() -> String:
 	return 'func_godot.palette'
@@ -37,7 +34,7 @@ func _import(source_file, save_path, options, r_platform_variants, r_gen_files) 
 	var file = FileAccess.open(source_file, FileAccess.READ)
 	if file == null:
 		var err = FileAccess.get_open_error()
-		print(['Error opening super.lmp file: ', err])
+		printerr(['Error opening super.lmp file: ', err])
 		return err
 
 	var colors := PackedColorArray()
