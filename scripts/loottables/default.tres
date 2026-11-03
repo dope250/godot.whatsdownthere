@@ -1,8 +1,58 @@
-[gd_resource type="Resource" script_class="LootTable" load_steps=2 format=3 uid="uid://bvsfhi28wruac"]
+[gd_resource type="Resource" script_class="LootTable" format=3 uid="uid://bvsfhi28wruac"]
 
-[ext_resource type="Script" path="res://scripts/loot_table.gd" id="1_uwf4u"]
+[ext_resource type="Script" uid="uid://bjrpy0pps3iuo" path="res://scripts/loot_table.gd" id="1_uwf4u"]
+[ext_resource type="Script" uid="uid://dr8omviiixd8o" path="res://scripts/loot_entry.gd" id="2_loot_entry"]
+
+[sub_resource type="Resource" id="LootEntry_Fish"]
+script = ExtResource("2_loot_entry")
+item_name = "Fish"
+weight = 20.0
+
+[sub_resource type="Resource" id="LootEntry_Boat"]
+script = ExtResource("2_loot_entry")
+item_name = "Boat"
+
+[sub_resource type="Resource" id="LootEntry_Shoes"]
+script = ExtResource("2_loot_entry")
+item_name = "Rusty old pair of shoes"
+weight = 8.0
+
+[sub_resource type="Resource" id="LootEntry_Can"]
+script = ExtResource("2_loot_entry")
+item_name = "Can"
+weight = 15.0
+
+[sub_resource type="Resource" id="LootEntry_Starfish"]
+script = ExtResource("2_loot_entry")
+item_name = "Starfish"
+weight = 8.0
+
+[sub_resource type="Resource" id="LootEntry_Salmon"]
+script = ExtResource("2_loot_entry")
+item_name = "Salmon"
+weight = 14.0
+
+[sub_resource type="Resource" id="LootEntry_Crab"]
+script = ExtResource("2_loot_entry")
+item_name = "Crab"
+weight = 10.0
+
+[sub_resource type="Resource" id="LootEntry_Seaweed"]
+script = ExtResource("2_loot_entry")
+item_name = "Seaweed"
+weight = 12.0
+
+[sub_resource type="Resource" id="LootEntry_Driftwood"]
+script = ExtResource("2_loot_entry")
+item_name = "Driftwood"
+weight = 8.0
+
+[sub_resource type="Resource" id="LootEntry_Bottle"]
+script = ExtResource("2_loot_entry")
+item_name = "Glass bottle"
+weight = 4.0
 
 [resource]
 script = ExtResource("1_uwf4u")
-description = ""
-loot = Array[String](["Fish", "Boat", "Rusty old pair of shoes", "Can", "Starfish"])
+description = "Common finds and rare curiosities"
+loot = Array[ExtResource("2_loot_entry")]([SubResource("LootEntry_Fish"), SubResource("LootEntry_Boat"), SubResource("LootEntry_Shoes"), SubResource("LootEntry_Can"), SubResource("LootEntry_Starfish"), SubResource("LootEntry_Salmon"), SubResource("LootEntry_Crab"), SubResource("LootEntry_Seaweed"), SubResource("LootEntry_Driftwood"), SubResource("LootEntry_Bottle")])

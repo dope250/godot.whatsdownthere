@@ -23,6 +23,9 @@ run/main_scene="res://scenes/Debug.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://WDT-Logo.svg"
 
+[autoload]
+WaterEntityAutoApply="*res://scripts/water_entity_auto_apply.gd"
+
 [display]
 
 window/size/viewport_width=1920

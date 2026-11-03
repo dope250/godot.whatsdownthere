@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="FuncGodotFGDSolidClass" load_steps=2 format=3 uid="uid://ng7u7cgm6mhs"]
+[gd_resource type="Resource" script_class="FuncGodotFGDSolidClass" load_steps=3 format=3 uid="uid://ng7u7cgm6mhs"]
 
 [ext_resource type="Script" path="res://addons/func_godot/src/fgd/func_godot_fgd_solid_class.gd" id="1_to1g4"]
+[ext_resource type="Script" path="res://scripts/water_entity.gd" id="2_water_entity"]
 
 [resource]
 script = ExtResource("1_to1g4")
@@ -34,3 +35,5 @@ meta_properties = {
 }
 node_class = "StaticBody3D"
 name_property = ""
+node_groups = Array[String](["water"])
+script_class = ExtResource("2_water_entity")

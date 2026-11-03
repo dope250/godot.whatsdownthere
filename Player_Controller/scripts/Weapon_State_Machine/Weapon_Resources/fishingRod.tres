@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="WeaponResource" load_steps=5 format=3 uid="uid://c7a17erbia7py"]
 
-[ext_resource type="PackedScene" uid="uid://bpxa3je174q43" path="res://Player_Controller/Spawnable_Objects/Projectiles_To_Load/basic_rigid_body_projectile.tscn" id="1_nvgy0"]
+[ext_resource type="PackedScene" uid="uid://blxtmvfj1u75l" path="res://Player_Controller/Spawnable_Objects/Projectiles_To_Load/bait.tscn" id="1_pilcw"]
 [ext_resource type="Script" path="res://Player_Controller/scripts/Weapon_State_Machine/weapon_resource.gd" id="2_qhhxx"]
 [ext_resource type="PackedScene" uid="uid://cvbk5bxenpxey" path="res://Player_Controller/Spawnable_Objects/Weapons/blaster_I.tscn" id="3_8m3sn"]
 [ext_resource type="PackedScene" uid="uid://ciu0xkaw0ioef" path="res://Player_Controller/Spawnable_Objects/SprayProfiles/spray_profile_1.tscn" id="4_yg2df"]
@@ -24,5 +24,7 @@ fire_range = 500
 can_be_dropped = true
 weapon_drop = ExtResource("3_8m3sn")
 weapon_spray = ExtResource("4_yg2df")
-projectile_to_load = ExtResource("1_nvgy0")
+projectile_to_load = ExtResource("1_pilcw")
 incremental_reload = false
+is_fishing_rod = true
+fishing_line_length = 30.0

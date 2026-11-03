@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://blxtmvfj1u75l"]
+
+[ext_resource type="Script" path="res://Player_Controller/scripts/Projectiles/bait_projectile.gd" id="1_8dcip"]
+[ext_resource type="PackedScene" path="res://projectile_swimmer.tscn" id="2_swimmer"]
+
+[node name="Projectile" type="Node3D"]
+script = ExtResource("1_8dcip")
+Projectile_Type = "Rigidbody_Projectile"
+Projectile_Velocity = 12
+Expirey_Time = 9999
+Rigid_Body_Projectile = ExtResource("2_swimmer")
+Preserve_Projectile_On_Hit = true

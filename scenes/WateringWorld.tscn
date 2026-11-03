@@ -12,7 +12,7 @@
 [ext_resource type="Material" uid="uid://kgrcr840fvya" path="res://maps/textures/signHangingCoin.tres" id="9_o25e7"]
 [ext_resource type="Material" uid="uid://d00s0g4usgmle" path="res://maps/textures/glass.tres" id="10_ntdrm"]
 [ext_resource type="Texture2D" uid="uid://dfc4aucipfyqg" path="res://maps/textures/128/misc_wood02-128.png" id="11_km40c"]
-[ext_resource type="Texture2D" uid="uid://cyg2snr1w5xw5" path="res://addons/func_godot/textures/default_texture.png" id="12_jiccj"]
+[ext_resource type="Texture2D" uid="uid://b68t8ejufawqg" path="res://addons/func_godot/textures/default_texture.png" id="12_jiccj"]
 [ext_resource type="PackedScene" uid="uid://cvbk5bxenpxey" path="res://Player_Controller/Spawnable_Objects/Weapons/blaster_I.tscn" id="12_l5avh"]
 [ext_resource type="PackedScene" uid="uid://oc13h3au02ro" path="res://Player_Controller/player_character.tscn" id="12_yt7de"]
 [ext_resource type="Script" uid="uid://cjflwwmacdate" path="res://Player_Controller/scripts/Weapon_State_Machine/WeaponSlot.gd" id="13_g87l4"]

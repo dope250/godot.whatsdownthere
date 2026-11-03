@@ -11,6 +11,7 @@ signal Hit_Successfull
 @export var Projectile_Velocity: int
 @export var Expirey_Time: int = 10
 @export var Rigid_Body_Projectile: PackedScene
+@export var Preserve_Projectile_On_Hit: bool = false
 
 @onready var Debug_Bullet = preload("res://Player_Controller/Spawnable_Objects/hit_debug.tscn")
 
@@ -99,7 +100,14 @@ func Launch_Rigid_Body_Projectile(Collision_Data, _projectile):
 	_proj.set_as_top_level(true)
 	_proj.set_linear_velocity(_Direction*Projectile_Velocity)
 
+func get_spawned_projectile() -> RigidBody3D:
+	if Projectiles_Spawned.is_empty():
+		return null
+	return Projectiles_Spawned.back() as RigidBody3D
+
 func _on_body_entered(body, _proj, _norm):
+	if Preserve_Projectile_On_Hit:
+		return
 	if body.is_in_group("Target") && body.has_method("Hit_Successful"):
 		body.Hit_Successful(damage)
 		Hit_Successfull.emit()

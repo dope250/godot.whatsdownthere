@@ -7,6 +7,7 @@ signal hit_successfull
 signal add_signal_to_hud
 
 signal connect_weapon_to_hud
+signal fishing_loot_caught(item_name: String)
 
 @export var animation_player: AnimationPlayer
 @export var melee_hitbox: ShapeCast3D
@@ -22,6 +23,9 @@ var _count = 0
 var shot_tween
 @export var weapon_stack:Array[WeaponSlot] #An Array of weapons currently in possesion by the player
 var current_weapon_slot: WeaponSlot = null
+var active_fishing_adapter: Projectile
+var active_fishing_projectile: RigidBody3D
+var active_fishing_line: FishingLine
 
 func _ready() -> void:
 	animation_player.animation_finished.connect(_on_animation_finished)
@@ -80,6 +84,8 @@ func enter() -> void:
 
 func exit(_next_weapon: WeaponSlot) -> void:
 	if _next_weapon != current_weapon_slot:
+		if current_weapon_slot.weapon.is_fishing_rod:
+			_cancel_fishing_cast()
 		if animation_player.get_current_animation() != current_weapon_slot.weapon.change_animation:
 			animation_player.queue(current_weapon_slot.weapon.change_animation)
 			next_weapon = _next_weapon
@@ -94,6 +100,9 @@ func shot_count_update() -> void:
 	shot_tween.tween_property(self,"_count",0,1)
 	
 func shoot() -> void:
+	if current_weapon_slot.weapon.is_fishing_rod:
+		_fishing_rod_action()
+		return
 	if current_weapon_slot.current_ammo != 0:
 		if current_weapon_slot.weapon.incremental_reload and animation_player.current_animation == current_weapon_slot.weapon.reload_animation:
 			animation_player.stop()
@@ -116,13 +125,79 @@ func shoot() -> void:
 	else:
 		reload()
 		
-func load_projectile(_spread):
+func load_projectile(_spread) -> Projectile:
 	var _projectile:Projectile = current_weapon_slot.weapon.projectile_to_load.instantiate()
 	bullet_point.add_child(_projectile)
 	add_signal_to_hud.emit(_projectile)
 	_projectile._Set_Projectile(current_weapon_slot.weapon.damage,_spread,current_weapon_slot.weapon.fire_range)
+	return _projectile
+
+func _fishing_rod_action() -> void:
+	if is_instance_valid(active_fishing_projectile):
+		if not animation_player.is_playing():
+			_reel_in_fishing_projectile()
+		return
+	if animation_player.is_playing():
+		return
+	if current_weapon_slot.current_ammo == 0:
+		reload()
+		return
+
+	animation_player.play(current_weapon_slot.weapon.shoot_animation)
+	current_weapon_slot.current_ammo -= 1
+	update_ammo.emit([current_weapon_slot.current_ammo, current_weapon_slot.reserve_ammo])
+	active_fishing_adapter = load_projectile(Vector2.ZERO)
+	active_fishing_projectile = active_fishing_adapter.get_spawned_projectile()
+	if not is_instance_valid(active_fishing_projectile):
+		_cancel_fishing_cast()
+		return
+	var line_parent := get_tree().current_scene
+	if line_parent == null:
+		line_parent = get_tree().root
+	active_fishing_line = FishingLine.new()
+	active_fishing_line.configure(bullet_point, active_fishing_projectile, current_weapon_slot.weapon.fishing_line_length)
+	line_parent.add_child(active_fishing_line)
+
+func _reel_in_fishing_projectile() -> void:
+	animation_player.play(current_weapon_slot.weapon.reload_animation)
+	if is_instance_valid(active_fishing_projectile):
+		if active_fishing_projectile.call("caught_something"):
+			var item_name := str(active_fishing_projectile.call("catch_random_item"))
+			if not item_name.is_empty():
+				fishing_loot_caught.emit(item_name)
+				print("Caught: ", item_name)
+
+		var reel_parent := get_tree().current_scene
+		if reel_parent == null:
+			reel_parent = get_tree().root
+		active_fishing_projectile.reparent(reel_parent, true)
+		active_fishing_projectile.call("reel_in", bullet_point.global_position)
+
+	active_fishing_line = null
+	if is_instance_valid(active_fishing_adapter):
+		active_fishing_adapter.queue_free()
+	active_fishing_adapter = null
+	active_fishing_projectile = null
+	current_weapon_slot.current_ammo = mini(current_weapon_slot.weapon.magazine, current_weapon_slot.current_ammo + 1)
+	update_ammo.emit([current_weapon_slot.current_ammo, current_weapon_slot.reserve_ammo])
+
+func _cancel_fishing_cast() -> void:
+	if is_instance_valid(active_fishing_line):
+		active_fishing_line.queue_free()
+	active_fishing_line = null
+	if is_instance_valid(active_fishing_adapter):
+		active_fishing_adapter.queue_free()
+	active_fishing_adapter = null
+	active_fishing_projectile = null
+	if current_weapon_slot and current_weapon_slot.weapon.is_fishing_rod:
+		current_weapon_slot.current_ammo = mini(current_weapon_slot.weapon.magazine, current_weapon_slot.current_ammo + 1)
+		update_ammo.emit([current_weapon_slot.current_ammo, current_weapon_slot.reserve_ammo])
 
 func reload() -> void:
+	if current_weapon_slot.weapon.is_fishing_rod:
+		if is_instance_valid(active_fishing_projectile) and not animation_player.is_playing():
+			_reel_in_fishing_projectile()
+		return
 	if current_weapon_slot.current_ammo == current_weapon_slot.weapon.magazine:
 		return
 	elif not animation_player.is_playing():
@@ -198,7 +273,7 @@ func _on_animation_finished(anim_name):
 		change_weapon(next_weapon)
 	
 	if anim_name == current_weapon_slot.weapon.reload_animation:
-		if !current_weapon_slot.weapon.incremental_reload:
+		if !current_weapon_slot.weapon.incremental_reload and not current_weapon_slot.weapon.is_fishing_rod:
 			calculate_reload()
 
 func _on_pick_up_detection_body_entered(body: RigidBody3D):

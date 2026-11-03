@@ -54,3 +54,7 @@ signal Zoom
 ## Incremental Reload is for shotgun or sigle item loaded weapons where you can interupt the reload process. If true the Calculate_Reload function on the weapon_state_machine must be called indepently. 
 ## For Example: at each step of a shotgun reload the function is called via the animation player.
 @export var incremental_reload: bool = false
+
+@export_group("Fishing Behaviour")
+@export var is_fishing_rod: bool = false
+@export_range(1.0, 100.0, 0.5) var fishing_line_length: float = 30.0
